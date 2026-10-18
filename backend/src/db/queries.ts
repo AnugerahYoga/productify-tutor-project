@@ -21,6 +21,11 @@ export const getUserById = async (id: string) => {
 };
 
 export const updateUser = async (id: string, data: Partial<NewUsers>) => {
+  const existingUser = await getUserById(id);
+  if (!existingUser) {
+    throw new Error(`User with id ${id} not found`);
+  }
+
   const [user] = await db
     .update(users)
     .set(data)
@@ -103,6 +108,7 @@ export const updateProduct = async (id: string, data: Partial<NewProducts>) => {
   if (!existingProduct) {
     throw new Error(`Product with id ${id} not found`);
   }
+
   const [product] = await db
     .update(products)
     .set(data)
@@ -113,6 +119,11 @@ export const updateProduct = async (id: string, data: Partial<NewProducts>) => {
 };
 
 export const deleteProduct = async (id: string) => {
+  const existingProduct = await getProductById(id);
+  if (!existingProduct) {
+    throw new Error(`Product with id ${id} not found`);
+  }
+
   const [product] = await db
     .delete(products)
     .where(eq(products.id, id))
