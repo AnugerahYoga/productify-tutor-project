@@ -32,10 +32,19 @@ export const updateUser = async (id: string, data: Partial<NewUsers>) => {
 
 // upsert => create or update
 export const upsertUser = async (data: NewUsers) => {
-  const existingUser = await getUserById(data.id);
-  if (existingUser) return updateUser(data.id, data);
+  //  ### kode yang pertama kali dibuat ###
+  //   const existingUser = await getUserById(data.id);
+  //   if (existingUser) return updateUser(data.id, data);
 
-  return createUser(data);
+  //   return createUser(data);
+
+  // ### code rabit suqestions ###
+  const [user] = await db
+    .insert(users)
+    .values(data)
+    .onConflictDoUpdate({ target: users.id, set: data })
+    .returning();
+  return user;
 };
 
 // PRODUCTS QUERIES
@@ -75,7 +84,7 @@ export const getProductById = async (id: string) => {
       user: true,
       comments: {
         with: { user: true },
-        orderBy: (products, { desc }) => [desc(comments.createAt)],
+        orderBy: (comments, { desc }) => [desc(comments.createAt)],
       },
     },
   });
@@ -100,11 +109,11 @@ export const updateProduct = async (id: string, data: Partial<NewProducts>) => {
 };
 
 export const deleteProduct = async (id: string) => {
-  const [producct] = await db
+  const [product] = await db
     .delete(products)
     .where(eq(products.id, id))
     .returning();
-  return producct;
+  return product;
 };
 
 // COMMENT QUERIES
