@@ -99,6 +99,10 @@ export const getProductByUserId = async (userId: string) => {
 };
 
 export const updateProduct = async (id: string, data: Partial<NewProducts>) => {
+  const existingProduct = await getProductById(id);
+  if (!existingProduct) {
+    throw new Error(`Product with id ${id} not found`);
+  }
   const [product] = await db
     .update(products)
     .set(data)
