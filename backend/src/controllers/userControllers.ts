@@ -14,7 +14,7 @@ export const userSync = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "Email, name, and imageUrl are required" });
 
-    const user = queries.upsertUser({
+    const user = await queries.upsertUser({
       id: userId,
       email,
       name,
