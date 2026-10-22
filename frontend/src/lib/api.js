@@ -27,7 +27,7 @@ export const createProduct = async (productData) => {
   return data;
 };
 
-export const updateProduct = async (id, ...productData) => {
+export const updateProduct = async (id, productData) => {
   const { data } = await api.put(`/products/${id}`, productData);
   return data;
 };
@@ -44,6 +44,6 @@ export const createComment = async (productId, content) => {
 };
 
 export const deleteComment = async (commentId) => {
-  const { data } = await api.post(`/comments/${commentId}`);
+  const { data } = await api.delete(`/comments/${commentId}`);
   return data;
 };
