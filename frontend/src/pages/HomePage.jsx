@@ -1,12 +1,12 @@
 import LoadingSpinner from "../components/LoadingSpinner";
-import { useProduct } from "../hook/useProduct";
+import { useProducts } from "../hook/useProduct";
 import { PackageIcon, SparklesIcon } from "lucide-react";
 import { Link } from "react-router";
 import { SignInButton } from "@clerk/react";
 import ProductCard from "../components/ProductCard";
 
 function HomePage() {
-  const { data: products, isLoading, error } = useProduct();
+  const { data: products, isLoading, error } = useProducts();
 
   if (isLoading) return <LoadingSpinner />;
 
